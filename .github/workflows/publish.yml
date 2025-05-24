@@ -7,8 +7,7 @@ permissions:
 on:
   push:
     branches:
-      - main  # Change if your default branch is different
-  workflow_dispatch:  # Allows manual triggering
+      - develop  # Change if your default branch is different
 
 jobs:
   build:
