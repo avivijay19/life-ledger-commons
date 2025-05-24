@@ -1,25 +1,15 @@
-name: Maven Release & Snapshot Publish
-
-permissions:
-  contents: read
-  packages: write
+name: Publish to GitHub Packages
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [ main, develop ]
 
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
@@ -27,29 +17,5 @@ jobs:
           server-id: github
           server-username: ${{ github.actor }}
           server-password: ${{ secrets.GH_TOKEN }}
-
-
-      - name: Configure Git for Maven Release Plugin
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-
-      - name: 'Login to GitHub Container Registry'
-        if: github.ref == 'refs/heads/master'
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Release or Snapshot
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          if [ "${GITHUB_REF##*/}" = "main" ]; then
-            echo "Performing Maven Release"
-            mvn -B release:prepare release:perform -Darguments="-DskipTests" -DreleaseProfiles=release
-          elif [ "${GITHUB_REF##*/}" = "develop" ]; then
-            echo "Deploying Snapshot"
-            mvn -B deploy -DskipTests -DreleaseProfiles=snapshot
-          fi
+      - name: Deploy to GitHub Packages
+        run: mvn -B deploy -DskipTests
