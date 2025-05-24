@@ -7,7 +7,8 @@ permissions:
 on:
   push:
     branches:
-      - develop  # Change if your default branch is different
+      - main
+      - develop
 
 jobs:
   build:
@@ -26,6 +27,18 @@ jobs:
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+
+      - name: Release or Snapshot
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${GITHUB_REF##*/}" = "main" ]; then
+            echo "Performing Maven Release"
+            mvn -B release:prepare release:perform -Darguments="-DskipTests" -DreleaseProfiles=release
+          elif [ "${GITHUB_REF##*/}" = "develop" ]; then
+            echo "Deploying Snapshot"
+            mvn -B deploy -DskipTests -DreleaseProfiles=snapshot
+          fi
 
       - name: Publish to GitHub Packages
         run: mvn deploy -DskipTests
