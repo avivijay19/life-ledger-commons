@@ -39,4 +39,18 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/avivijay19/life-ledger-commons</url>
+        </repository>
+        <snapshotRepository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/avivijay19/life-ledger-commons</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 </project>
