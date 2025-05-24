@@ -24,6 +24,10 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
           cache: 'maven'
+          server-id: github
+          server-username: ${{ github.actor }}
+          server-password: ${{ secrets.GH_TOKEN }}
+
 
       - name: Configure Git for Maven Release Plugin
         run: |
