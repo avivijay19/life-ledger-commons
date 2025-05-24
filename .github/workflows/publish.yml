@@ -1,14 +1,13 @@
 name: Publish Java package
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 on:
   push:
     branches:
       - main
-      - develop
 
 jobs:
   build:
@@ -25,22 +24,24 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Set up Git user for Maven Release Plugin
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-      - name: Release or Snapshot
+      - name: Setup Git credentials
+        run: |
+          git config --global credential.helper store
+          echo "https://x-access-token:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ "${GITHUB_REF##*/}" = "main" ]; then
-            echo "Performing Maven Release"
-            mvn -B release:prepare release:perform -Darguments="-DskipTests" -DreleaseProfiles=release
-          elif [ "${GITHUB_REF##*/}" = "develop" ]; then
-            echo "Deploying Snapshot"
-            mvn -B deploy -DskipTests -DreleaseProfiles=snapshot
-          fi
 
-      - name: Publish to GitHub Packages
-        run: mvn deploy -DskipTests
+      - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          echo "Performing Maven Release"
+          mvn -B release:prepare release:perform -Darguments="-DskipTests" -DreleaseProfiles=release
