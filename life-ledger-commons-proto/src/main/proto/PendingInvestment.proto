@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package com.github.avivijay19.mutualFund;
+option  java_multiple_files = true;
+option java_package = "com.github.avivijay19.mutualFund";
+option  java_outer_classname = "PendingInvestmentProto";
+
+
+service PendingInvestmentService {
+  rpc insertPendingTransactionsRecords(PendingInvestmentRequest) returns (PendingInvestmentResponse);
+}
+
+message PendingInvestmentRequest {
+  string schema_code = 1;
+  string investment_date = 2;
+  double invested_amount = 3;
+  InvestmentSource investment_source = 4;
+  InvestmentStatus investmentStatus = 5;
+}
+
+message PendingInvestmentResponse {
+  string message = 1;
+  bool success = 2;
+  int64 status_code = 3;
+}
+
+enum InvestmentSource {
+  ET_MONEY = 0;
+  FUNDZ_BAZAR = 1;
+  SCRIPBOX = 2;
+}
+
+enum InvestmentStatus {
+  IN_PROGRESS = 0;
+  COMPLETED = 1;
+  FAILED = 2;
+  NOT_STARTED = 3;
+}
