@@ -20,9 +20,10 @@
     </properties>
 
     <modules>
-        <module>life-ledger-commons-entity</module>
         <module>life-ledger-commons-constants</module>
         <module>life-ledger-commons-dto</module>
+        <module>life-ledger-commons-proto</module>
+        <module>life-ledger-commons-utils</module>
     </modules>
 
 
