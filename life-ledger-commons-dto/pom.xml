@@ -3,11 +3,11 @@
     <parent>
         <groupId>com.github.avivijay19</groupId>
         <artifactId>life-ledger-commons</artifactId>
-        <version>0.0.1</version>
+        <version>0.0.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>life-ledger-commons-dto</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>life-ledger-commons-dto</name>
     <url>https://maven.apache.org</url>
     <dependencies>
@@ -22,12 +22,12 @@
         <dependency>
             <groupId>com.github.avivijay19</groupId>
             <artifactId>life-ledger-commons-constants</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.github.avivijay19</groupId>
             <artifactId>life-ledger-commons-proto</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
