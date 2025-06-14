@@ -6,11 +6,11 @@ package com.github.avivijay19.lifeledger.commons.enumeration.sheets;
  **/
 
 public enum SheetTitle {
-    Fuel,
-    TransactionCategory,
-    Transaction,
-    PendingInvestment,
-    InvestedHistoryMutualFund,
-    InvestedMutualFund,
-    SipMutualFund
+    FUEL,
+    TRANSACTION_CATEGORY,
+    TRANSACTION,
+    PENDING_INVESTMENT,
+    INVESTED_HISTORY_MUTUAL_FUND,
+    INVESTED_MUTUAL_FUND,
+    SIP_MUTUAL_FUND
 }
