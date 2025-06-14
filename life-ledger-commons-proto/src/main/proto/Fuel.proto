@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package com.github.avivijay19.fuel;
+option  java_multiple_files = true;
+option java_package = "com.github.avivijay19.fuel";
+option  java_outer_classname = "FuelProto";
+
+service FuelService {
+  rpc FuelTransaction(FuelTransactionRequest) returns (FuelTransactionResponse);
+}
+
+message FuelTransactionRequest {
+  VehicleNumber vehicle_number = 1;
+  FuelBrand fuel_brand = 2;
+  double fuel_cost = 3;
+  double fuel_rate = 4;
+  int64 odo_metre_reading = 5;
+  double trip_a_reading = 6;
+  string location = 7;
+}
+
+message FuelTransactionResponse {
+  string message = 1;
+  bool success = 2;
+  int64 status_code = 3;
+}
+
+enum VehicleNumber {
+  KA_01_KE_1292 = 0;
+}
+
+enum FuelBrand {
+  SHELL = 0;
+  RELIANCE_INDUSTRIES_LIMITED = 1;
+  BHARAT_PETROLEUM_CORPORATION_LIMITED = 2;
+  INDIAN_OIL_CORPORATION_LIMITED = 3;
+  OTHER = 4;
+}
+
