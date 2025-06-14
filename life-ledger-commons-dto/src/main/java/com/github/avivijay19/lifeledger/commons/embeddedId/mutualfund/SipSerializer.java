@@ -1,6 +1,6 @@
 package com.github.avivijay19.lifeledger.commons.embeddedId.mutualfund;
 
-import com.github.avivijay19.mutualFund.InvestmentSource;
+import com.github.avivijay19.lifeledger.commons.enumeration.mutualFund.InvestmentSource;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

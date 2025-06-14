@@ -1,7 +1,7 @@
 package com.github.avivijay19.lifeledger.commons.entity.mutualfund;
 
 import com.github.avivijay19.lifeledger.commons.embeddedId.mutualfund.InvestedHistorySerializer;
-import com.github.avivijay19.mutualFund.InvestmentSource;
+import com.github.avivijay19.lifeledger.commons.enumeration.mutualFund.InvestmentSource;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

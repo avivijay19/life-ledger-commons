@@ -1,6 +1,6 @@
 package com.github.avivijay19.lifeledger.commons.dto.mf.pending.request;
 
-import com.github.avivijay19.mutualFund.InvestmentSource;
+import com.github.avivijay19.lifeledger.commons.enumeration.mutualFund.InvestmentSource;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
