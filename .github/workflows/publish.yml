@@ -1,7 +1,7 @@
 name: Publish Java package
 
 permissions:
-  contents: write
+  contents: read
   packages: write
 
 on:
@@ -10,7 +10,7 @@ on:
       - main
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,25 +23,15 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+          server-id: github
+          server-username: GITHUB_ACTOR
+          server-password: GITHUB_TOKEN
 
-      - name: Set up Git user for Maven Release Plugin
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-
-      - name: Build with Maven
+      - name: Build and test
         run: mvn -B package --file pom.xml
 
-      - name: Setup Git credentials
-        run: |
-          git config --global credential.helper store
-          echo "https://x-access-token:${GITHUB_TOKEN}@github.com" > ~/.git-credentials
+      - name: Deploy to GitHub Packages
+        run: mvn -B deploy -DskipTests --file pom.xml
         env:
+          GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          echo "Performing Maven Release"
-          mvn -B release:prepare release:perform -Darguments="-DskipTests" -DreleaseProfiles=release
