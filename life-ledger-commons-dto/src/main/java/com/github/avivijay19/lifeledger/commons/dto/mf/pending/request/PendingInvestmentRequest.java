@@ -25,4 +25,8 @@ public class PendingInvestmentRequest {
     private double investedAmount;
 
     private InvestmentSource investmentSource;
+
+    private boolean isNfoInvestment = false;
+
+    private double nfoDefaultNavValue = 0.0;
 }

@@ -8,5 +8,6 @@ package com.github.avivijay19.lifeledger.commons.enumeration.mutualFund;
 public enum InvestmentSource {
     ET_MONEY,
     FUNDZ_BAZAR,
-    SCRIPBOX
+    SCRIPBOX,
+    ANGELONE
 }

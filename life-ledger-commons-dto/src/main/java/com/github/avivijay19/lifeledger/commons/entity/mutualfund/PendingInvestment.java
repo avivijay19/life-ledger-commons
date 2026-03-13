@@ -1,29 +1,35 @@
 package com.github.avivijay19.lifeledger.commons.entity.mutualfund;
 
-
+import com.github.avivijay19.lifeledger.commons.entity.AuditableEntity;
 import com.github.avivijay19.lifeledger.commons.enumeration.mutualFund.InvestmentSource;
 import com.github.avivijay19.lifeledger.commons.enumeration.mutualFund.InvestmentStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UuidGenerator;
-import java.time.Instant;
 import java.time.LocalDate;
+import java.util.UUID;
 
-@NoArgsConstructor
 @Data
 @Entity
-@Table(name = "pending_investment")
-public class PendingInvestment {
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "pending_investment", schema = "mutual_fund")
+public class PendingInvestment extends AuditableEntity {
 
     @Id
     @UuidGenerator
-    private String id;
+    @Column(name = "uuid", updatable = false, nullable = false)
+    private UUID uuid;
 
     @Column(name = "schema_code")
     private String schemeCode;
@@ -34,38 +40,17 @@ public class PendingInvestment {
     @Column(name = "invested_amount")
     private double investedAmount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "investment_source")
     private InvestmentSource investmentSource;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "investment_status")
     private InvestmentStatus investmentStatus;
 
-    @CreationTimestamp
-    @Column(name = "audit_create_timestamp", updatable = false, nullable = false)
-    private Instant auditCreateTimestamp;
+    @Column(name = "is_nfo_investment")
+    private boolean isNfoInvestment;
 
-    @UpdateTimestamp
-    @Column(name = "audit_update_timestamp")
-    private Instant auditUpdateTimestamp;
-
-    public PendingInvestment(String schemeCode, LocalDate investmentDate, double investedAmount,
-                             InvestmentSource investmentSource, InvestmentStatus investmentStatus) {
-        this.schemeCode = schemeCode;
-        this.investmentDate = investmentDate;
-        this.investedAmount = investedAmount;
-        this.investmentSource = investmentSource;
-        this.investmentStatus = investmentStatus;
-    }
-
-    public PendingInvestment(String schemeCode, LocalDate investmentDate, double investedAmount,
-                             InvestmentSource investmentSource, InvestmentStatus investmentStatus,
-                             Instant auditCreateTimestamp, Instant auditUpdateTimestamp) {
-        this.schemeCode = schemeCode;
-        this.investmentDate = investmentDate;
-        this.investedAmount = investedAmount;
-        this.investmentSource = investmentSource;
-        this.investmentStatus = investmentStatus;
-        this.auditCreateTimestamp = auditCreateTimestamp;
-        this.auditUpdateTimestamp = auditUpdateTimestamp;
-    }
+    @Column(name = "nfo_default_nav_value")
+    private double nfoDefaultNavValue;
 }

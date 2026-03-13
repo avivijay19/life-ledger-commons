@@ -1,4 +1,4 @@
-package com.github.avivijay19.lifeledger.commons.entity;
+package com.github.avivijay19.lifeledger.commons.entity.transactions;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "transactionCategory")
+@Table(name = "transactionCategory",  schema = "transactions")
 @Entity
 public class TransactionCategory {
     @Id

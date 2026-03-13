@@ -3,7 +3,6 @@ package com.github.avivijay19.lifeledger.commons.entity.mutualfund;
 import com.github.avivijay19.lifeledger.commons.entity.AuditableEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -12,40 +11,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UuidGenerator;
-import java.time.LocalDate;
 import java.util.UUID;
 
 /**
  * @author : avinashvijayvargiya
- * @created : 27/12/24, Friday
+ * @created : 25/12/25, Thursday
  **/
-
 @Data
 @Entity
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "current_mutual_fund", schema = "mutual_fund")
-public class CurrentMutualFund extends AuditableEntity {
+@Table(name = "config_mutual_fund", schema = "mutual_fund")
+public class ConfigMutualFund extends AuditableEntity {
 
     @Id
     @UuidGenerator
-    @GeneratedValue
-    @Column(name = "uuid", updatable = false)
+    @Column(name = "uuid", updatable = false, nullable = false)
     private UUID uuid;
 
-    @Column(name = "folio_number", nullable = false)
-    private String folioNumber;
+    @Column(name = "config_key")
+    private String configKey;
 
-    @Column(name = "as_of_date", nullable = false)
-    private LocalDate asOfDate;
-
-    @Column(name = "scheme_code", nullable = false)
-    private String schemeCode;
-
-    @Column(name = "nav")
-    private Double nav;
-
-    @Column(name = "mutual_fund_value")
-    private Double mutualFundValue;
+    @Column(name = "config_value")
+    private String configValue;
 }

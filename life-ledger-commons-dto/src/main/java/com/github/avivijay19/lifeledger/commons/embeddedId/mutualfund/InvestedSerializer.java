@@ -21,13 +21,8 @@ public class InvestedSerializer implements Serializable {
 
     private String id;
 
-
     private String schemeCode;
 
     private String folioNumber;
 
-    public InvestedSerializer(String schemeCode, String folio_number) {
-        this.schemeCode = schemeCode;
-        this.folioNumber = folio_number;
-    }
 }

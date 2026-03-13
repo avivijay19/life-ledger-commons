@@ -4,5 +4,6 @@ public enum InvestmentStatus {
     IN_PROGRESS,
     COMPLETED,
     FAILED,
-    NOT_STARTED
+    NOT_STARTED,
+    CANCELLED
 }

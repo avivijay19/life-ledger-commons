@@ -1,32 +1,47 @@
 package com.github.avivijay19.lifeledger.commons.entity.mutualfund;
 
-import com.github.avivijay19.lifeledger.commons.embeddedId.mutualfund.SipSerializer;
+import com.github.avivijay19.lifeledger.commons.entity.AuditableEntity;
+import com.github.avivijay19.lifeledger.commons.enumeration.mutualFund.InvestmentSource;
+import com.github.avivijay19.lifeledger.commons.enumeration.mutualFund.SipStatus;
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import java.time.Instant;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.UuidGenerator;
 import java.time.LocalDate;
+import java.util.UUID;
 
 /**
  * @author : avinashvijayvargiya
  * @created : 20/02/25, Thursday
  **/
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 @Entity
-@Table(name = "sip_mutual_fund")
-public class SipMutualFund {
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "sip_mutual_fund", schema = "mutual_fund")
+public class SipMutualFund extends AuditableEntity {
 
-    @EmbeddedId
-    private SipSerializer sipSerializer;
+    @Id
+    @UuidGenerator
+    @Column(name = "uuid", updatable = false, nullable = false)
+    private UUID uuid;
+
+    @Column(name = "scheme_code", nullable = false)
+    private String schemeCode;
+
+    @Column(name = "investment_source", nullable = false)
+    private InvestmentSource investmentSource;
+
+    @Column(name = "sip_created_on", nullable = false)
+    private LocalDate sipCreatedOn;
 
     @Column(name = "amount_invested")
     private double amountInvested;
@@ -40,11 +55,12 @@ public class SipMutualFund {
     @Column(name = "count_of_investment")
     private int countOfInvestment;
 
-    @CreationTimestamp
-    @Column(name = "audit_create_timestamp", updatable = false, nullable = false)
-    private Instant auditCreateTimestamp;
+    @Column(name = "sip_start_date")
+    private LocalDate sipStartDate;
 
-    @UpdateTimestamp
-    @Column(name = "audit_update_timestamp")
-    private Instant auditUpdateTimestamp;
+    @Column(name = "last_execution_date")
+    private LocalDate lastExecutionDate;
+
+    @Column(name = "sip_status")
+    private SipStatus sipStatus;       // ACTIVE, PAUSED, CANCELLED
 }

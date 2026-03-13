@@ -1,4 +1,4 @@
-package com.github.avivijay19.lifeledger.commons.entity;
+package com.github.avivijay19.lifeledger.commons.entity.transactions;
 
 import com.github.avivijay19.lifeledger.commons.enumeration.transaction.TransactionStatus;
 import com.github.avivijay19.lifeledger.commons.enumeration.transaction.VerificationStatus;
@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "transaction")
+@Table(name = "transaction", schema = "transactions")
 @Entity
 public class Transaction {
     @Id

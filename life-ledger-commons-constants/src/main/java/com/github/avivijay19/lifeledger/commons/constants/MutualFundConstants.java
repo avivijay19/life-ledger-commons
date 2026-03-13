@@ -6,6 +6,8 @@ package com.github.avivijay19.lifeledger.commons.constants;
  **/
 
 public class MutualFundConstants {
+
+//    URL MAPPINGS
     public static final String MUTUAL_FUND_BASE_URL = "/mf";
 
     public static final String BULK_MUTUAL_FUND_BASE_URL = "/bulk";
@@ -94,5 +96,12 @@ public class MutualFundConstants {
         MUTUAL_FUND_BASE_URL + PENDING_MUTUAL_FUND_BASE_URL + MUTUAL_FUND_SCHEME_CODE;
 
     public static final String PENDING_MF = MUTUAL_FUND_BASE_URL + PENDING_MUTUAL_FUND_BASE_URL;
+
+    public static final String MUTUAL_FUND_CONFIG_KEY =
+        MUTUAL_FUND_BASE_URL + "/configKey";
+
+
+//    CONSTANTS MAPPING
+    public static final String STAMP_DUTY_PRICE = "STAMP_DUTY_PRICE";
 
 }

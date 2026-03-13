@@ -4,11 +4,10 @@
         <groupId>com.github.avivijay19</groupId>
         <artifactId>life-ledger-commons</artifactId>
         <version>0.0.2-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>life-ledger-commons-utils</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>life-ledger-commons-utils</name>
     <url>http://maven.apache.org</url>
 

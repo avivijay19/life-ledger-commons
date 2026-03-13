@@ -1,4 +1,4 @@
-package com.github.avivijay19.lifeledger.commons.entity;
+package com.github.avivijay19.lifeledger.commons.entity.vehicle;
 
 import com.github.avivijay19.fuel.FuelBrand;
 import com.github.avivijay19.lifeledger.commons.embeddedId.FuelSerializer;
@@ -21,12 +21,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "fuel")
+@Table(name = "fuel", schema = "vehicle")
 @Entity
 public class Fuel {
 
     @EmbeddedId
-    FuelSerializer fuelSerializer;
+    private FuelSerializer fuelSerializer;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "fuelBrand")

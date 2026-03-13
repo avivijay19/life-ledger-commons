@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 @Builder
-public class CurrentMutualFund {
+public class CurrentMutualFundResponse {
 
     private String id;
 
