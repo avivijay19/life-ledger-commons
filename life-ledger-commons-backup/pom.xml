@@ -17,7 +17,7 @@
     <properties>
         <google-sheets.version>v4-rev20230815-2.0.0</google-sheets.version>
         <google-auth.version>1.43.0</google-auth.version>
-        <google-http-jackson2.version>1.43.3</google-http-jackson2.version>
+        <google-http-jackson2.version>2.1.0</google-http-jackson2.version>
         <parquet.version>1.14.1</parquet.version>
         <hadoop.version>3.4.1</hadoop.version>
     </properties>
