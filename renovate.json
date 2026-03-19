@@ -1,0 +1,90 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits"],
+  "labels": ["dependencies"],
+  "prHourlyLimit": 4,
+  "prConcurrentLimit": 10,
+  "schedule": ["after 10pm and before 6am every weekday", "every weekend"],
+  "timezone": "Asia/Kolkata",
+  "packageRules": [
+    {
+      "description": "Automerge patch and minor for stable deps",
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "description": "Do not automerge major bumps",
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["dependencies", "major-update"]
+    },
+    {
+      "description": "Group Spring Boot",
+      "matchPackageNames": ["org.springframework.boot:**"],
+      "groupName": "Spring Boot"
+    },
+    {
+      "description": "Group Spring Security",
+      "matchPackageNames": ["org.springframework.security:**"],
+      "groupName": "Spring Security"
+    },
+    {
+      "description": "Group Spring Cloud",
+      "matchPackageNames": ["org.springframework.cloud:**"],
+      "groupName": "Spring Cloud"
+    },
+    {
+      "description": "Group Spring Data",
+      "matchPackageNames": ["org.springframework.data:**"],
+      "groupName": "Spring Data"
+    },
+    {
+      "description": "Group Micrometer",
+      "matchPackageNames": ["io.micrometer:**"],
+      "groupName": "Micrometer"
+    },
+    {
+      "description": "Group Flyway",
+      "matchPackageNames": ["org.flywaydb:**"],
+      "groupName": "Flyway"
+    },
+    {
+      "description": "Group Resilience4j",
+      "matchPackageNames": ["io.github.resilience4j:**"],
+      "groupName": "Resilience4j"
+    },
+    {
+      "description": "Group Logging",
+      "matchPackageNames": ["ch.qos.logback:**", "net.logstash.logback:**", "org.slf4j:**"],
+      "groupName": "Logging"
+    },
+    {
+      "description": "Group Java testing",
+      "matchPackageNames": ["org.junit.jupiter:**", "org.mockito:**", "org.assertj:**", "org.testcontainers:**"],
+      "groupName": "Java testing"
+    },
+    {
+      "description": "Group GitHub Actions",
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions"
+    },
+    {
+      "description": "Group Docker images",
+      "matchDatasources": ["docker"],
+      "groupName": "Docker images"
+    },
+    {
+      "description": "Block Spring Boot 4.x",
+      "matchPackageNames": ["org.springframework.boot:**"],
+      "allowedVersions": "<4.0.0"
+    },
+    {
+      "description": "Block springdoc 3.x",
+      "matchPackageNames": ["org.springdoc:**"],
+      "allowedVersions": "<3.0.0"
+    }
+  ]
+}
