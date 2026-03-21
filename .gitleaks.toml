@@ -1,0 +1,10 @@
+title = "Life Ledger Gitleaks Config"
+
+[allowlist]
+  description = "Global allowlist"
+  paths = [
+    '''(.*/)?\.env\.example''',
+    '''(.*/)?test/.*''',
+    '''(.*/)?src/test/.*''',
+    '''(.*/)?tests/.*''',
+  ]
