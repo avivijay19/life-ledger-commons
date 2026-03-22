@@ -15,3 +15,8 @@ repos:
         entry: mvn checkstyle:check -B -q
         pass_filenames: false
         files: \.java$
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
