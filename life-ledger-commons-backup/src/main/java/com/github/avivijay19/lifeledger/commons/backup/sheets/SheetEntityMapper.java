@@ -1,6 +1,7 @@
 package com.github.avivijay19.lifeledger.commons.backup.sheets;
 
 import jakarta.persistence.Column;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -49,6 +50,28 @@ public final class SheetEntityMapper {
             result.add(map);
         }
         return result;
+    }
+
+    public static <T> T mapToEntity(Map<String, String> row, Class<T> entityClass) {
+        try {
+            var entity = entityClass.getDeclaredConstructor().newInstance();
+            for (Field field : entityClass.getDeclaredFields()) {
+                var column = field.getAnnotation(Column.class);
+                if (column == null) {
+                    continue;
+                }
+                var value = row.get(column.name());
+                if (value == null || "null".equals(value)) {
+                    continue;
+                }
+                field.setAccessible(true);
+                field.set(entity, SheetTypeConverter.convert(value, field.getType()));
+            }
+            return entity;
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(
+                "Failed to map row to entity: " + entityClass.getSimpleName(), e);
+        }
     }
 
     private static <T> Map<String, String> toRow(T entity) {
