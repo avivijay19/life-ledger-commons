@@ -55,7 +55,11 @@ public class GoogleSheetClient {
                 .execute();
             log.info("Sheet '{}' cleared.", sheetName);
         } catch (GoogleJsonResponseException e) {
-            if (e.getStatusCode() == 404) {
+            if (e.getStatusCode() == 404
+                || (e.getStatusCode() == 400
+                    && e.getDetails() != null
+                    && e.getDetails().getMessage() != null
+                    && e.getDetails().getMessage().contains("Unable to parse range"))) {
                 log.info("Worksheet '{}' not found, creating it.", sheetName);
                 createWorksheet(service, sheetName);
             } else {
