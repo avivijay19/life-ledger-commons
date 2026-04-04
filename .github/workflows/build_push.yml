@@ -3,6 +3,15 @@ name: Java CI with Maven
 on:
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+      - '.github/renovate.json'
+
+concurrency:
+  group: "ci-${{ github.ref }}"
+  cancel-in-progress: true
 
 jobs:
   build:

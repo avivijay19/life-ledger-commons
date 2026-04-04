@@ -1,0 +1,69 @@
+name: Version Check
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  version-check:
+    name: Check VERSION bump
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check VERSION file was updated
+        id: version_check
+        run: |
+          BASE_BRANCH="${{ github.base_ref }}"
+          git fetch origin "$BASE_BRANCH"
+
+          # Check if VERSION file exists
+          if [ ! -f VERSION ]; then
+            echo "::error::VERSION file is missing from the repository root."
+            exit 1
+          fi
+
+          CURRENT_VERSION=$(cat VERSION | tr -d "[:space:]")
+
+          # Validate semver format X.Y.Z
+          if ! echo "$CURRENT_VERSION" | grep -qE "^[0-9]+\.[0-9]+\.[0-9]+$"; then
+            echo "::error::VERSION file contains invalid semver: \"$CURRENT_VERSION\". Expected format: X.Y.Z"
+            exit 1
+          fi
+
+          # Check if VERSION was changed compared to base branch
+          BASE_VERSION=$(git show "origin/$BASE_BRANCH:VERSION" 2>/dev/null | tr -d "[:space:]" || echo "")
+          if [ "$CURRENT_VERSION" = "$BASE_VERSION" ]; then
+            echo "version_bumped=false" >> "$GITHUB_OUTPUT"
+            echo "current_version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+          else
+            echo "version_bumped=true" >> "$GITHUB_OUTPUT"
+            echo "current_version=$CURRENT_VERSION" >> "$GITHUB_OUTPUT"
+            echo "base_version=$BASE_VERSION" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Comment on PR if version not bumped
+        if: steps.version_check.outputs.version_bumped == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## Version Bump Required\n\nThis PR does not update the \`VERSION\` file. Please bump the version before merging.\n\nCurrent version: \`${{ steps.version_check.outputs.current_version }}\`\n\nRun one of the following to bump the version:\n\`\`\`bash\n./scripts/bump-version.sh patch   # bug fixes\n./scripts/bump-version.sh minor   # new features\n./scripts/bump-version.sh major   # breaking changes\n\`\`\``
+            })
+
+      - name: Fail if version not bumped
+        if: steps.version_check.outputs.version_bumped == 'false'
+        run: |
+          echo "::error::VERSION was not bumped. Current version: ${{ steps.version_check.outputs.current_version }}"
+          exit 1
+
+      - name: Report version bump
+        if: steps.version_check.outputs.version_bumped == 'true'
+        run: |
+          echo "Version bumped: ${{ steps.version_check.outputs.base_version }} -> ${{ steps.version_check.outputs.current_version }}"

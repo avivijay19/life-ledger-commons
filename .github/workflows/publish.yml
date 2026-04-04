@@ -8,6 +8,15 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - 'LICENSE'
+      - '.github/renovate.json'
+
+concurrency:
+  group: "ci-${{ github.ref }}"
+  cancel-in-progress: true
 
 jobs:
   publish:
