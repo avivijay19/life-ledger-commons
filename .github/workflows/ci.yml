@@ -1,0 +1,94 @@
+# =============================================================================
+# Commons Library — Centralized CI/CD Pipeline
+# Replaces: build_push.yml (17 lines) + publish.yml (47 lines) + version-check.yml (70 lines)
+# Using: life-ledger-actions reusable workflows
+#
+# Pipeline: DETECT → VERSION-CHECK → VERIFY-JAVA → BUILD-JAVA → PUBLISH-MAVEN
+# Note: Library only — no Docker image, no SDK sync
+# =============================================================================
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['**.md', 'docs/**', 'LICENSE', '.github/renovate.json']
+  pull_request:
+    branches: [main]
+    paths-ignore: ['**.md', 'docs/**', 'LICENSE', '.github/renovate.json']
+  workflow_dispatch:
+
+concurrency:
+  group: "ci-${{ github.ref }}"
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  # --- Stage 0: Change Detection ---
+  detect:
+    uses: avivijay19/life-ledger-actions/.github/workflows/detect-changes.yml@v1
+    with:
+      filters: |
+        src:
+          - 'src/**'
+          - 'pom.xml'
+          - '.mvn/**'
+          - '**/pom.xml'
+        ci:
+          - '.github/workflows/**'
+
+  # --- Stage 0: Version Check (PR only) ---
+  version-check:
+    if: github.event_name == 'pull_request'
+    uses: avivijay19/life-ledger-actions/.github/workflows/version-check.yml@v1
+    with:
+      version-file: 'VERSION'
+      require-bump: true
+      validate-commits: true
+
+  # --- Stage 1: VERIFY (no checkstyle — library has no checkstyle config) ---
+  verify:
+    needs: detect
+    if: needs.detect.outputs.src == 'true' || needs.detect.outputs.ci == 'true'
+    uses: avivijay19/life-ledger-actions/.github/workflows/verify-java.yml@v1
+    permissions:
+      contents: read
+      security-events: write
+    with:
+      java-version: '21'
+      checkstyle-enabled: false
+      codeql-enabled: false
+      owasp-enabled: false
+      kubeconform-enabled: false
+
+  # --- Stage 2: BUILD (tests across all modules) ---
+  build:
+    needs: verify
+    uses: avivijay19/life-ledger-actions/.github/workflows/build-java.yml@v1
+    with:
+      java-version: '21'
+      test-shards: |
+        [
+          {"name": "all", "includes": "**/*Test*", "excludes": ""}
+        ]
+      run-integration-tests: false
+      coverage-enabled: true
+      coverage-threshold: 50
+      mutation-enabled: false
+      maven-profiles: 'ci'
+      spring-profiles: 'test'
+      upload-jar: false
+
+  # --- Stage 3: PUBLISH to GitHub Packages (push/dispatch only) ---
+  publish:
+    needs: build
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    uses: avivijay19/life-ledger-actions/.github/workflows/publish-maven.yml@v1
+    with:
+      java-version: '21'
+      skip-tests: true
+      server-id: 'github'
+    permissions:
+      contents: read
+      packages: write
