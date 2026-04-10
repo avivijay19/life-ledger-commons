@@ -1,0 +1,13 @@
+name: PR delta
+
+# Runs only on pull_request events. Complements ci.yml which runs on push.
+# No tests or builds — those already ran when the branch was pushed.
+# Purpose: keep git history clean (commit format + branch naming).
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  verify:
+    uses: avivijay19/life-ledger-actions/.github/workflows/verify-pr.yml@v2
