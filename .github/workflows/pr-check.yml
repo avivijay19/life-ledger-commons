@@ -10,4 +10,6 @@ on:
 
 jobs:
   verify:
-    uses: avivijay19/life-ledger-actions/.github/workflows/verify-pr.yml@v2
+    uses: avivijay19/life-ledger-actions/.github/workflows/verify-pr.yml@v2.1.0
+    with:
+      version-check-enabled: true

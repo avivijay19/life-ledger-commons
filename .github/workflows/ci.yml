@@ -20,5 +20,5 @@ concurrency:
 
 jobs:
   build:
-    uses: avivijay19/life-ledger-actions/.github/workflows/build-java.yml@v2
+    uses: avivijay19/life-ledger-actions/.github/workflows/build-java.yml@v2.1.0
     secrets: inherit
