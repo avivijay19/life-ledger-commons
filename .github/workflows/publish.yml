@@ -1,0 +1,24 @@
+name: Publish
+
+# Publish Maven artifacts to GitHub Packages on push to main.
+# Tests already passed in CI (Track 1), so skip-tests defaults to true.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - 'LICENSE'
+      - '.github/renovate.json'
+  workflow_dispatch:
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    uses: avivijay19/life-ledger-actions/.github/workflows/publish-maven.yml@v2.1.0
+    secrets: inherit
