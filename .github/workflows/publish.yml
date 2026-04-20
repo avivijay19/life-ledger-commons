@@ -41,6 +41,6 @@ jobs:
           key: maven-${{ runner.os }}-21-${{ hashFiles('**/pom.xml') }}
 
       - name: Publish to GitHub Packages
-        run: ./mvnw deploy -B -q -DskipTests
+        run: ./mvnw deploy -B -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
